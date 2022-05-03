@@ -19,6 +19,7 @@
 --
 ---------------------------------------------------------------------------------
 
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -72,6 +73,8 @@ architecture arch of lpsc_mandelbrot_firmware is
     -- 800x600
     -- 640x480
 
+    -- la résolution de l'écran est par défaut 1024x600
+    
     -- constant C_VGA_CONFIG : t_VgaConfig := C_1024x768_VGACONFIG;
     constant C_VGA_CONFIG : t_VgaConfig := C_1024x600_VGACONFIG;
     -- constant C_VGA_CONFIG : t_VgaConfig := C_800x600_VGACONFIG;

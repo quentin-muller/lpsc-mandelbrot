@@ -40,8 +40,11 @@ entity mandelbrot_generator is
 end mandelbrot_generator;
 
 architecture Behavioral of mandelbrot_generator is
+--composants
 
+--signaux
 begin
 
+--instanciation
 
 end Behavioral;

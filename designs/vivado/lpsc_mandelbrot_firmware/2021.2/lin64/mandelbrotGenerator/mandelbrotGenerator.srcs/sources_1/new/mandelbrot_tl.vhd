@@ -75,5 +75,4 @@ i_mandelbrot : entity work.mandelbrot_generator
               nextZ_real => nextZ_real_s,
               nextZ_imag => nextZ_imag_s);
 
-
 end Behavioral;
