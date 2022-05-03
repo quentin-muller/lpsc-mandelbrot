@@ -391,9 +391,6 @@ begin
                      HCountIntxD <= std_logic_vector(unsigned(HCountIntxD) + 1);
                  end if;
              end if;
-
          end process HVCountIntxP;
-
     end block FpgaUserCDxB;
-
 end arch;
