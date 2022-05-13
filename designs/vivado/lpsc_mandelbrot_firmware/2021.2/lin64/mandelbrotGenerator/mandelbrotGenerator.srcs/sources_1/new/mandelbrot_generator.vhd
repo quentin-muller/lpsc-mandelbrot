@@ -48,6 +48,10 @@ entity mandelbrot_generator is
 end mandelbrot_generator;
 
 architecture Behavioral of mandelbrot_generator is
+-- forcer l'utilisation des DSP
+attribute use_dsp : string;
+attribute use_dsp of Behavioral : architecture is "yes";
+
 --composants
 
 --signaux
