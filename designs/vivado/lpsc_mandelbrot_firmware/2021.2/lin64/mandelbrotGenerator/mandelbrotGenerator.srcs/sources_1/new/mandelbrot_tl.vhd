@@ -32,13 +32,16 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity mandelbrot_tl is
-    Port ( clk : in STD_LOGIC;
-           rst : in STD_LOGIC;
-           z_real : in STD_LOGIC_VECTOR (16 downto 0);
-           z_imag : in STD_LOGIC_VECTOR (16 downto 0);
-           c_real : in STD_LOGIC_VECTOR (16 downto 0);
-           c_imag : in STD_LOGIC_VECTOR (16 downto 0);
-           iteration : out STD_LOGIC_VECTOR (16 downto 0));
+    generic (
+           SIZE_VEC  : integer := 18
+            );
+    Port ( clk       : in STD_LOGIC;
+           rst       : in STD_LOGIC;
+           z_real    : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           z_imag    : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           c_real    : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           c_imag    : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           iteration : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0));
 end mandelbrot_tl;
 
 architecture Behavioral of mandelbrot_tl is
@@ -47,32 +50,43 @@ architecture Behavioral of mandelbrot_tl is
 
 --composants
 component mandelbrot_generator is
+    generic (
+           SIZE_VEC : integer := 18
+            );
     Port ( clk : in STD_LOGIC;
            rst : in STD_LOGIC;
-           z_real : in STD_LOGIC_VECTOR (16 downto 0);
-           z_imag : in STD_LOGIC_VECTOR (16 downto 0);
-           c_real : in STD_LOGIC_VECTOR (16 downto 0);
-           c_imag : in STD_LOGIC_VECTOR (16 downto 0);
-           nextZ_real : out STD_LOGIC_VECTOR (16 downto 0);
-           nextZ_imag : out STD_LOGIC_VECTOR (16 downto 0));
+           z_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           z_imag : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           c_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           c_imag : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           nextZ_real : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           nextZ_imag : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           rayon_2    : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0)
+           );
 end component mandelbrot_generator;
 
 --signals
-signal nextZ_real_s : STD_LOGIC_VECTOR (16 downto 0);
-signal nextZ_imag_s : STD_LOGIC_VECTOR (16 downto 0);
-signal Z_real_s : STD_LOGIC_VECTOR (16 downto 0);    -- affectation dans la machine d'état entre next et z
-signal Z_imag_s : STD_LOGIC_VECTOR (16 downto 0);
+signal nextZ_real_s : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+signal nextZ_imag_s : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+signal Z_real_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);    -- affectation dans la machine d'état entre next et z
+signal Z_imag_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+signal r2           : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
 
 begin
 
 i_mandelbrot : entity work.mandelbrot_generator
+    generic map (
+           SIZE_VEC => SIZE_VEC
+    )
     port map( clk        => clk,
               rst        => rst,
-              z_real     => Z_real_s,
-              z_imag     => Z_imag_s,
+              z_real     => z_real,
+              z_imag     => z_imag,
               c_real     => c_real,
               c_imag     => c_imag,
               nextZ_real => nextZ_real_s,
-              nextZ_imag => nextZ_imag_s);
+              nextZ_imag => nextZ_imag_s,
+              rayon_2     => iteration
+              );
 
 end Behavioral;
