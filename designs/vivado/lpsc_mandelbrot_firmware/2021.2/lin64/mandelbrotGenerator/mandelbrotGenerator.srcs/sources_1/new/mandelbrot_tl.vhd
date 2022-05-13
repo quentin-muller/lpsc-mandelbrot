@@ -68,8 +68,8 @@ end component mandelbrot_generator;
 --signals
 signal nextZ_real_s : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
 signal nextZ_imag_s : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-signal Z_real_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);    -- affectation dans la machine d'état entre next et z
-signal Z_imag_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+signal z_real_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);    -- affectation dans la machine d'état entre next et z
+signal z_imag_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
 signal r2           : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
 
 begin
@@ -80,13 +80,24 @@ i_mandelbrot : entity work.mandelbrot_generator
     )
     port map( clk        => clk,
               rst        => rst,
-              z_real     => z_real,
-              z_imag     => z_imag,
+              z_real     => z_real_s,
+              z_imag     => z_imag_s,
               c_real     => c_real,
               c_imag     => c_imag,
               nextZ_real => nextZ_real_s,
               nextZ_imag => nextZ_imag_s,
               rayon_2     => iteration
               );
+              
+ process(rst, clk) is
+ begin
+    if rst = '1' then
+        z_real_s <= z_real;
+        z_imag_s <= z_imag;
+    elsif rising_edge(clk) then
+        z_real_s <= nextZ_real_s;
+        z_imag_s <= nextZ_imag_s;
+    end if;
+ end process;
 
 end Behavioral;
