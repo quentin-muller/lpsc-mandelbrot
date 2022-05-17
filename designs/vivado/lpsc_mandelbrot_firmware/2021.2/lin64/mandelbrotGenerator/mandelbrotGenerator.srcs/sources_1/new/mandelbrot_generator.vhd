@@ -32,15 +32,13 @@ entity mandelbrot_generator is
     generic (
            SIZE_VEC : integer := 18
             );
-    Port ( clk    : in STD_LOGIC;
-           rst    : in STD_LOGIC;
-           z_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+    Port ( z_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
            z_imag : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
            c_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
            c_imag : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
            nextZ_real : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
            nextZ_imag : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-           rayon_2    : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0)
+           div        : out STD_LOGIC
           );
 end mandelbrot_generator;
 
@@ -56,6 +54,7 @@ signal ref              : sfixed(3 downto -14); --valeur ref pour le troncage
 signal z_r_in, z_i_in   : sfixed(3 downto -14); -- entrée caster en fixedpoint
 signal z_r_out, z_i_out : sfixed(3 downto -14); -- entrée caster en fixedpoint
 signal rayonCarre_out   : sfixed(3 downto -14); -- valeur de sortie du ryon au carré en fixedpoint
+signal rayon_2          : std_logic_vector((SIZE_VEC-1) downto 0); -- 
 
 signal c_r_in, c_i_in   : sfixed(3 downto -14); -- entrée caster en fixedpoint
 signal z2_r, z2_i       : sfixed(3 downto -14); -- signaux au carré
@@ -64,7 +63,7 @@ signal z_re1_int             : sfixed(3 downto -14); --valeur intermediaire réel
 signal z_im1_int1,z_im1_int2 : sfixed(3 downto -14); --valeur intermediaire imaginaire
 
 constant two : sfixed(3 downto -14) := "010000000000000000"; -- valeur 2 pour un calcul en fixedpoint
-
+constant QUATRE : std_logic_vector((SIZE_VEC-1) downto 0) := "0100";
 begin
 
 --conversion des entrée en fixed point
@@ -90,8 +89,11 @@ z_i_out    <= resize(arg=>z_im1_int2 + c_i_in, size_res=>ref, round_style=>fixed
 -- calcul du rayon au carré
 rayonCarre_out <= resize(arg=>z2_r + z2_i, size_res=>ref, round_style=>fixed_truncate);
 
--- routage des sorties
+
 rayon_2    <= std_logic_vector(TO_SIGNED(rayonCarre_out, rayon_2'length));
+
+-- routage des sorties
+div <= '1' when (rayon_2 >= QUATRE) else '0';
 nextZ_real <= std_logic_vector(TO_SIGNED(z_r_out, nextZ_real'length));
 nextZ_imag <= std_logic_vector(TO_SIGNED(z_i_out, nextZ_imag'length));
 

@@ -73,7 +73,7 @@ architecture arch of lpsc_mandelbrot_firmware is
     -- 800x600
     -- 640x480
 
-    -- la résolution de l'écran est par défaut 1024x600
+    -- la rï¿½solution de l'ï¿½cran est par dï¿½faut 1024x600
     
     -- constant C_VGA_CONFIG : t_VgaConfig := C_1024x768_VGACONFIG;
     constant C_VGA_CONFIG : t_VgaConfig := C_1024x600_VGACONFIG;
@@ -84,7 +84,10 @@ architecture arch of lpsc_mandelbrot_firmware is
     constant C_RESOLUTION : string := "1024x600";
     -- constant C_RESOLUTION : string := "800x600";
     -- constant C_RESOLUTION : string := "640x480";
-
+    
+    constant MY_DATA_SIZE                       : integer               := 18; -- size data fixedpoint
+    constant SCREEN_RES                         : integer               := 10;
+    
     constant C_DATA_SIZE                        : integer               := 16;
     constant C_PIXEL_SIZE                       : integer               := 8;
     constant C_BRAM_VIDEO_MEMORY_ADDR_SIZE      : integer               := 20;
@@ -171,11 +174,32 @@ architecture arch of lpsc_mandelbrot_firmware is
       );
 END COMPONENT;
 
+component ComplexValueGenerator
+    generic
+        (SIZE       : integer := 16;  -- Taille en bits de nombre au format virgule fixe
+         X_SIZE     : integer := 1024;  -- Taille en X (Nombre de pixel) de la fractale ï¿½  afficher
+         Y_SIZE     : integer := 600;  -- Taille en Y (Nombre de pixel) de la fractale ï¿½  afficher
+         SCREEN_RES : integer := 10);  -- Nombre de bit pour les vecteurs X et Y de la position du pixel
+    port
+        (clk           : in  std_logic;
+         reset         : in  std_logic;
+         -- interface avec le module MandelbrotMiddleware
+         next_value    : in  std_logic;
+         c_inc_RE      : in  std_logic_vector((SIZE - 1) downto 0);
+         c_inc_IM      : in  std_logic_vector((SIZE - 1) downto 0);
+         c_top_left_RE : in  std_logic_vector((SIZE - 1) downto 0);
+         c_top_left_IM : in  std_logic_vector((SIZE - 1) downto 0);
+         c_real        : out std_logic_vector((SIZE - 1) downto 0);
+         c_imaginary   : out std_logic_vector((SIZE - 1) downto 0);
+         X_screen      : out std_logic_vector((SCREEN_RES - 1) downto 0);
+         Y_screen      : out std_logic_vector((SCREEN_RES - 1) downto 0));
+end component;
+
     -- Signals
 
     -- Clocks
     signal ClkVgaxC             : std_logic                                         := '0';
-     signal ClkMandelxC          : std_logic;
+    signal ClkMandelxC          : std_logic;
     signal UBlazeUserClkxC      : std_logic                                         := '0';
     -- Reset
     signal ResetxR              : std_logic                                         := '0';
@@ -332,7 +356,17 @@ begin
         signal ClkSys100MhzBufgxC : std_logic                                    := '0';
         signal HCountIntxD        : std_logic_vector((C_DATA_SIZE - 1) downto 0) := std_logic_vector(C_VGA_CONFIG.HActivexD - 1);
         signal VCountIntxD        : std_logic_vector((C_DATA_SIZE - 1) downto 0) := (others => '0');
-
+        -- Signaux complex value
+        
+        constant INC_SIZE_X  : std_logic_vector((MY_DATA_SIZE-1) downto 0) := "000000000000110000";
+        constant INC_SIZE_Y  : std_logic_vector((MY_DATA_SIZE-1) downto 0) := "000000000000110111";
+        constant TOP_LEFT_RE : std_logic_vector((MY_DATA_SIZE-1) downto 0) := "111000000000000000";
+        constant TOP_LEFT_IM : std_logic_vector((MY_DATA_SIZE-1) downto 0) := "000100000000000000";
+        
+        signal add_x         : std_logic_vector((SCREEN_RES-1) downto 0);
+        signal add_y         : std_logic_vector((SCREEN_RES-1) downto 0);
+        signal iterateurReady: std_logic;
+        
     begin  -- block FpgaUserCDxB
 
          PllNotLockedxAS : PllNotLockedxS <= not PllLockedxS;
@@ -371,6 +405,27 @@ begin
                 VidOnxSI     => '1',           --VidOnxS,             --
                 DataxDO      => DataImGen2BramMVxD, --DataImGen2HDMIxD,    --
                 Color1xDI    => RdDataFlagColor1xDP(((C_PIXEL_SIZE * 3) - 1) downto 0));
+                
+         -- Generation des c_real et c_imag pour l'iterateur de mandelbrot       
+         cmplxValGen : entity work.ComplexValueGenerator
+            generic map
+                (SIZE       => MY_DATA_SIZE,-- Taille en bits de nombre au format virgule fixe
+                 --X_SIZE     => ,  -- Taille en X (Nombre de pixel) de la fractale a  afficher
+                 --Y_SIZE     => , -- Taille en Y (Nombre de pixel) de la fractale a  afficher
+                 SCREEN_RES => SCREEN_RES)   -- Nombre de bit pour les vecteurs X et Y de la position du pixel
+            port map
+                (clk           => ClkMandelxC,
+                 reset         => PllNotLockedxS,
+                 -- interface avec le module MandelbrotMiddleware
+                 next_value    => iterateurReady, -- signal ready de la fin du generateur 
+                 c_inc_RE      => INC_SIZE_X,
+                 c_inc_IM      => INC_SIZE_Y,
+                 c_top_left_RE => TOP_LEFT_RE,
+                 c_top_left_IM => TOP_LEFT_IM,
+                 c_real        => open,
+                 c_imaginary   => open,
+                 X_screen      => add_x,
+                 Y_screen      => add_y);
 
          HVCountIntxP : process (all) is
          begin  -- process HVCountxP
