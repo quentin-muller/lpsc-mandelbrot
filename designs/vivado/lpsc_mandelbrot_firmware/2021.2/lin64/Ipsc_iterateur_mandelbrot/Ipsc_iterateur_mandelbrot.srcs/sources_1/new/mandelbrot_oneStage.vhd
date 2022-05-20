@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 03.05.2022 17:45:52
+-- Create Date: 20.05.2022 15:12:54
 -- Design Name: 
--- Module Name: mandelbrot_generator - Behavioral
+-- Module Name: mandelbrot_oneStage - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -15,7 +15,7 @@
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
--- Composatn interne du generateur d'image de mandelbrot
+-- 
 ----------------------------------------------------------------------------------
 
 
@@ -25,10 +25,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 library ieee_perso;
 use ieee_perso.fixed_pkg.all;
---use ieee_perso.fixed_float_types.all;
 
-
-entity mandelbrot_generator is
+entity mandelbrot_oneStage is
     generic (
            SIZE_VEC : integer := 18
             );
@@ -40,14 +38,13 @@ entity mandelbrot_generator is
            nextZ_imag : out sfixed(3 downto -14);
            div        : out STD_LOGIC
           );
-end mandelbrot_generator;
+end mandelbrot_oneStage;
 
-architecture Behavioral of mandelbrot_generator is
+architecture Behavioral of mandelbrot_oneStage is
+
 -- forcer l'utilisation des DSP
 attribute use_dsp : string;
 attribute use_dsp of Behavioral : architecture is "yes";
-
---composants
 
 --signaux
 signal ref              : sfixed(3 downto -14); --valeur ref pour le troncage
@@ -63,6 +60,7 @@ signal z_im1_int1,z_im1_int2 : sfixed(3 downto -14); --valeur intermediaire imag
 
 constant two    : sfixed(3 downto -14) := "001000000000000000"; -- valeur 2 pour un calcul en fixedpoint
 constant QUATRE : sfixed(3 downto -14) := "010000000000000000"; -- valeur 4 pour la divergance
+
 begin
 
 --conversion des entrée en fixed point

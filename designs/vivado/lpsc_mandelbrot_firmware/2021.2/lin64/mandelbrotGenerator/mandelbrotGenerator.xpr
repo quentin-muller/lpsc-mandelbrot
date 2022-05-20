@@ -59,7 +59,7 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="nexys_video"/>
-    <Option Name="WTXSimLaunchSim" Val="12"/>
+    <Option Name="WTXSimLaunchSim" Val="40"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -99,7 +99,7 @@
         </FileInfo>
       </File>
       <File Path="$PSRCDIR/sources_1/imports/Desktop/fixed_float_types_c.vhd">
-        <FileInfo SFType="VHDL2008">
+        <FileInfo>
           <Attr Name="Library" Val="ieee_perso"/>
           <Attr Name="ImportPath" Val="$PPRDIR/../../../../../../../Users/quent/Desktop/fixed_float_types_c.vhd"/>
           <Attr Name="ImportTime" Val="1652201793"/>
@@ -120,37 +120,8 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/bd/blocCalcul_v1/blocCalcul_v1.bd">
-        <FileInfo>
-          <Attr Name="UserDisabled" Val="1"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_2/blocCalcul_v1_c_addsub_0_2.xci">
-          <Proxy FileSetName="blocCalcul_v1_c_addsub_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_2_0/blocCalcul_v1_mult_gen_2_0.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_2_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_2/blocCalcul_v1_mult_gen_0_2.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_1/blocCalcul_v1_c_addsub_0_1.xci">
-          <Proxy FileSetName="blocCalcul_v1_c_addsub_0_1"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_util_vector_logic_0_0/blocCalcul_v1_util_vector_logic_0_0.xci">
-          <Proxy FileSetName="blocCalcul_v1_util_vector_logic_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_0/blocCalcul_v1_mult_gen_0_0.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_0/blocCalcul_v1_c_addsub_0_0.xci">
-          <Proxy FileSetName="blocCalcul_v1_c_addsub_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_1/blocCalcul_v1_mult_gen_0_1.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_1"/>
-        </CompFileExtendedInfo>
+      <File Path="$PPRDIR/../mandelbrotgenerator/component.xml">
+        <FileInfo SFType="IPXACT"/>
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
@@ -183,6 +154,11 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/tb_mandelbrot_iterateur_behav.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="tb_mandelbrot_iterateur"/>
@@ -196,6 +172,7 @@
         <Option Name="PamPseudoTop" Val="pseudo_tb"/>
         <Option Name="SrcSet" Val="sources_1"/>
         <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_madelbrot_oneStage_behav.wcfg"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_mandelbrot_iterateur_behav.wcfg"/>
       </Config>
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">

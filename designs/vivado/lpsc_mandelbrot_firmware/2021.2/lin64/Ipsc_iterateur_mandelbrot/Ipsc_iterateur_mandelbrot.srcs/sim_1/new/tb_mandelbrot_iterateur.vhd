@@ -33,7 +33,7 @@ end tb_mandelbrot_iterateur;
 
 architecture Behavioral of tb_mandelbrot_iterateur is
 --componenent
-component mandelbrot_tl is
+component mandelbrot_stateMachine is
     generic (
            SIZE_VEC  : integer := 18;
            MAX_ITER  : integer := 100
@@ -71,7 +71,7 @@ begin
 
 clk <= not clk after (CLK_PERIOD / 2);
 
-tl_mandelbrot: entity work.mandelbrot_tl
+tl_mandelbrot: entity work.mandelbrot_stateMachine
     Port map( 
            clk       => clk,
            rst       => rst,

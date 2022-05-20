@@ -112,7 +112,7 @@ i_mandelbrot : entity work.mandelbrot_generator
                     we <= '0';
                     
                 WHEN ITERATION_STEP =>
-                    if ((divergence = '0') or (iter_s < MAX_ITER)) then
+                    if ((divergence = '0') and (iter_s < MAX_ITER)) then
                         next_state <= ITERATION_STEP;
                         iter_s <= iter_s + 1;
                         z_real_s <= nextZ_real_s;

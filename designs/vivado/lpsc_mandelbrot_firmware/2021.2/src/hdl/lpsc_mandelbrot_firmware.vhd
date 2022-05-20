@@ -195,6 +195,21 @@ component ComplexValueGenerator
          Y_screen      : out std_logic_vector((SCREEN_RES - 1) downto 0));
 end component;
 
+-- mon iterateur de mandelbrot
+COMPONENT mandelbrot_stateMachine_0
+  PORT (
+    clk : IN STD_LOGIC;
+    rst : IN STD_LOGIC;
+    z_real : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    z_imag : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    c_real : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    c_imag : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    iteration : OUT STD_LOGIC_VECTOR(17 DOWNTO 0);
+    ready : OUT STD_LOGIC;
+    we : OUT STD_LOGIC
+  );
+END COMPONENT;
+
     -- Signals
 
     -- Clocks
@@ -367,6 +382,11 @@ begin
         signal add_y         : std_logic_vector((SCREEN_RES-1) downto 0);
         signal iterateurReady: std_logic;
         
+        signal we_s : std_logic;
+        signal c_real_inIterateur : std_logic_vector((MY_DATA_SIZE-1) downto 0); -- val c_real en entrée de mandelbrot
+        signal c_imag_inIterateur : std_logic_vector((MY_DATA_SIZE-1) downto 0); -- val c_imag en entrée de mandelbrot
+        signal data_store         : std_logic_vector((MY_DATA_SIZE-1) downto 0); -- nombre d'iteration en sortie de mandelbrot
+        
     begin  -- block FpgaUserCDxB
 
          PllNotLockedxAS : PllNotLockedxS <= not PllLockedxS;
@@ -422,10 +442,23 @@ begin
                  c_inc_IM      => INC_SIZE_Y,
                  c_top_left_RE => TOP_LEFT_RE,
                  c_top_left_IM => TOP_LEFT_IM,
-                 c_real        => open,
-                 c_imaginary   => open,
+                 c_real        => c_real_inIterateur,
+                 c_imaginary   => c_imag_inIterateur,
                  X_screen      => add_x,
                  Y_screen      => add_y);
+                 
+        i_iterateur : mandelbrot_stateMachine_0
+            PORT MAP (
+            clk => ClkMandelxC,
+            rst => PllNotLockedxS,
+            z_real => (others => '0'),
+            z_imag => (others => '0'),
+            c_real => c_real_inIterateur,
+            c_imag => c_imag_inIterateur,
+            iteration => data_store,
+            ready => iterateurReady,
+            we => we_s
+            );
 
          HVCountIntxP : process (all) is
          begin  -- process HVCountxP

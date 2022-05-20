@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 20.05.2022 11:45:56
+-- Create Date: 20.05.2022 15:19:55
 -- Design Name: 
--- Module Name: tb_madelbrot_oneStage - Behavioral
+-- Module Name: tb_singleStage - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -18,7 +18,6 @@
 -- 
 ----------------------------------------------------------------------------------
 
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -26,18 +25,13 @@ use IEEE.NUMERIC_STD.ALL;
 library ieee_perso;
 use ieee_perso.fixed_pkg.all;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
-entity tb_madelbrot_oneStage is
+entity tb_singleStage is
 --  Port ( );
-end tb_madelbrot_oneStage;
+end tb_singleStage;
 
-architecture Behavioral of tb_madelbrot_oneStage is
+architecture Behavioral of tb_singleStage is
 
-component  mandelbrot_generator is
+component  mandelbrot_oneStage is
     generic (
            SIZE_VEC : integer := 18
             );
@@ -71,7 +65,7 @@ begin
 
 clk <= not clk after (CLK_PERIOD / 2);
 
-i_mandelbrot : entity work.mandelbrot_generator
+i_mandelbrot : entity work.mandelbrot_oneStage
     generic map (
            SIZE_VEC => SIZE_VEC
     )
@@ -107,3 +101,5 @@ begin
 end process p1;
 
 end Behavioral;
+
+
