@@ -382,7 +382,7 @@ begin
         signal add_y         : std_logic_vector((SCREEN_RES-1) downto 0);
         signal iterateurReady: std_logic;
         
-        signal we_s : std_logic;
+        signal we_s               : std_logic; -- activation de l'écriture dans la mémoire
         signal c_real_inIterateur : std_logic_vector((MY_DATA_SIZE-1) downto 0); -- val c_real en entrée de mandelbrot
         signal c_imag_inIterateur : std_logic_vector((MY_DATA_SIZE-1) downto 0); -- val c_imag en entrée de mandelbrot
         signal data_store         : std_logic_vector((MY_DATA_SIZE-1) downto 0); -- nombre d'iteration en sortie de mandelbrot
@@ -449,15 +449,15 @@ begin
                  
         i_iterateur : mandelbrot_stateMachine_0
             PORT MAP (
-            clk => ClkMandelxC,
-            rst => PllNotLockedxS,
+            clk    => ClkMandelxC,
+            rst    => PllNotLockedxS,
             z_real => (others => '0'),
             z_imag => (others => '0'),
             c_real => c_real_inIterateur,
             c_imag => c_imag_inIterateur,
             iteration => data_store,
-            ready => iterateurReady,
-            we => we_s
+            ready     => iterateurReady,
+            we        => we_s
             );
 
          HVCountIntxP : process (all) is
