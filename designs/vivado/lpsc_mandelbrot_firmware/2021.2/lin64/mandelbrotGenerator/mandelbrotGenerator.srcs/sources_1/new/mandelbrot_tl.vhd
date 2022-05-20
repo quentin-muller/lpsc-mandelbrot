@@ -23,6 +23,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
+library ieee_perso;
+use ieee_perso.fixed_pkg.all;
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
 --library UNISIM;
@@ -51,27 +53,28 @@ architecture Behavioral of mandelbrot_tl is
 --constants
 
 --composants
-component mandelbrot_generator is
+component  mandelbrot_generator is
     generic (
            SIZE_VEC : integer := 18
             );
-    Port ( z_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-           z_imag : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+    Port ( z_real : in sfixed(3 downto -14);
+           z_imag : in sfixed(3 downto -14);
            c_real : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
            c_imag : in STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-           nextZ_real : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-           nextZ_imag : out STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+           nextZ_real : out sfixed(3 downto -14);
+           nextZ_imag : out sfixed(3 downto -14);
            div        : out STD_LOGIC
-           );
-end component mandelbrot_generator;
+          );
+end component;
+
 -- definition du type de la machine d'état
 type eState is (IDLE, WRITE_MEM, ITERATION_STEP);
 
 --signals
-signal nextZ_real_s : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-signal nextZ_imag_s : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
-signal z_real_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);    -- affectation dans la machine d'état entre next et z
-signal z_imag_s     : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
+signal nextZ_real_s : sfixed(3 downto -14);
+signal nextZ_imag_s : sfixed(3 downto -14);
+signal z_real_s     : sfixed(3 downto -14);    -- affectation dans la machine d'état entre next et z
+signal z_imag_s     : sfixed(3 downto -14);
 signal r2           : STD_LOGIC_VECTOR (SIZE_VEC-1 downto 0);
 signal divergence   : STD_LOGIC;
 signal iter_s       : natural range 0 to MAX_ITER;
@@ -95,8 +98,10 @@ i_mandelbrot : entity work.mandelbrot_generator
               );
    
      process(rst, clk) is
-     begin            
-        if rising_edge(clk) then     
+     begin
+        if rst = '1' then
+            next_state <= IDLE;       
+        elsif rising_edge(clk) then     
             CASE current_state IS
                 WHEN IDLE =>
                     next_state <= ITERATION_STEP;
@@ -136,10 +141,7 @@ i_mandelbrot : entity work.mandelbrot_generator
 
 process(rst, clk) is
 begin
-    if rst = '1' then
-        next_state <= IDLE;
-        current_state <= IDLE; 
-    elsif rising_edge(clk) then
+    if rising_edge(clk) then
         current_state <= next_state;
     end if;
 end process;

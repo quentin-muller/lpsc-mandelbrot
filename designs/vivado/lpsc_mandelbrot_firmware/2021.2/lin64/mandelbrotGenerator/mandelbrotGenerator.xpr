@@ -59,7 +59,7 @@
     <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSABoardId" Val="nexys_video"/>
-    <Option Name="WTXSimLaunchSim" Val="0"/>
+    <Option Name="WTXSimLaunchSim" Val="12"/>
     <Option Name="WTModelSimLaunchSim" Val="0"/>
     <Option Name="WTQuestaLaunchSim" Val="0"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
@@ -127,8 +127,14 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_2/blocCalcul_v1_c_addsub_0_2.xci">
+          <Proxy FileSetName="blocCalcul_v1_c_addsub_0_2"/>
+        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_2_0/blocCalcul_v1_mult_gen_2_0.xci">
           <Proxy FileSetName="blocCalcul_v1_mult_gen_2_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_2/blocCalcul_v1_mult_gen_0_2.xci">
+          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_2"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_1/blocCalcul_v1_c_addsub_0_1.xci">
           <Proxy FileSetName="blocCalcul_v1_c_addsub_0_1"/>
@@ -136,20 +142,14 @@
         <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_util_vector_logic_0_0/blocCalcul_v1_util_vector_logic_0_0.xci">
           <Proxy FileSetName="blocCalcul_v1_util_vector_logic_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_1/blocCalcul_v1_mult_gen_0_1.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_1"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_2/blocCalcul_v1_c_addsub_0_2.xci">
-          <Proxy FileSetName="blocCalcul_v1_c_addsub_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_2/blocCalcul_v1_mult_gen_0_2.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_2"/>
+        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_0/blocCalcul_v1_mult_gen_0_0.xci">
+          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_c_addsub_0_0/blocCalcul_v1_c_addsub_0_0.xci">
           <Proxy FileSetName="blocCalcul_v1_c_addsub_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_0/blocCalcul_v1_mult_gen_0_0.xci">
-          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_0"/>
+        <CompFileExtendedInfo CompFileName="blocCalcul_v1.bd" FileRelPathName="ip/blocCalcul_v1_mult_gen_0_1/blocCalcul_v1_mult_gen_0_1.xci">
+          <Proxy FileSetName="blocCalcul_v1_mult_gen_0_1"/>
         </CompFileExtendedInfo>
       </File>
       <Config>
@@ -166,11 +166,27 @@
     </FileSet>
     <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1" RelGenDir="$PGENDIR/sim_1">
       <Filter Type="Srcs"/>
+      <File Path="$PSRCDIR/sim_1/new/tb_madelbrot_oneStage.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/tb_madelbrot_oneStage_behav.wcfg">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sim_1/new/tb_mandelbrot_iterateur.vhd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="mandelbrot_tl"/>
+        <Option Name="TopModule" Val="tb_mandelbrot_iterateur"/>
         <Option Name="TopLib" Val="xil_defaultlib"/>
-        <Option Name="TopAutoSet" Val="TRUE"/>
         <Option Name="TransportPathDelay" Val="0"/>
         <Option Name="TransportIntDelay" Val="0"/>
         <Option Name="SelectedSimModel" Val="rtl"/>
@@ -179,6 +195,7 @@
         <Option Name="PamSignalDriverFile" Val="xil_bypass_driver"/>
         <Option Name="PamPseudoTop" Val="pseudo_tb"/>
         <Option Name="SrcSet" Val="sources_1"/>
+        <Option Name="XSimWcfgFile" Val="$PPRDIR/tb_madelbrot_oneStage_behav.wcfg"/>
       </Config>
     </FileSet>
     <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
@@ -275,9 +292,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_2_0_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_mult_gen_2_0" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_2_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_mult_gen_2_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_2_0_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -287,9 +302,7 @@
     </Run>
     <Run Id="blocCalcul_v1_c_addsub_0_1_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_c_addsub_0_1" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_c_addsub_0_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_c_addsub_0_1_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_c_addsub_0_1_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -299,9 +312,7 @@
     </Run>
     <Run Id="blocCalcul_v1_util_vector_logic_0_0_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_util_vector_logic_0_0" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_util_vector_logic_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_util_vector_logic_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_util_vector_logic_0_0_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -311,9 +322,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_0_1_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_mult_gen_0_1" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_0_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_mult_gen_0_1_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_0_1_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -323,9 +332,7 @@
     </Run>
     <Run Id="blocCalcul_v1_c_addsub_0_2_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_c_addsub_0_2" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_c_addsub_0_2" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_c_addsub_0_2_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_c_addsub_0_2_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -335,9 +342,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_0_2_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_mult_gen_0_2" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_0_2" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_mult_gen_0_2_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_0_2_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -347,9 +352,7 @@
     </Run>
     <Run Id="blocCalcul_v1_c_addsub_0_0_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_c_addsub_0_0" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_c_addsub_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_c_addsub_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_c_addsub_0_0_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -359,9 +362,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_0_0_synth_1" Type="Ft3:Synth" SrcSet="blocCalcul_v1_mult_gen_0_0" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/blocCalcul_v1_mult_gen_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_0_0_synth_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -388,9 +389,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_2_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_2_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_mult_gen_2_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_2_0_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -407,9 +406,7 @@
     </Run>
     <Run Id="blocCalcul_v1_c_addsub_0_1_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_c_addsub_0_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_c_addsub_0_1_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_c_addsub_0_1_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -426,9 +423,7 @@
     </Run>
     <Run Id="blocCalcul_v1_util_vector_logic_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_util_vector_logic_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_util_vector_logic_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_util_vector_logic_0_0_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -445,9 +440,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_0_1_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_0_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_mult_gen_0_1_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_0_1_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -464,9 +457,7 @@
     </Run>
     <Run Id="blocCalcul_v1_c_addsub_0_2_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_c_addsub_0_2" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_c_addsub_0_2_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_c_addsub_0_2_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -483,9 +474,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_0_2_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_0_2" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_mult_gen_0_2_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_0_2_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -502,9 +491,7 @@
     </Run>
     <Run Id="blocCalcul_v1_c_addsub_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_c_addsub_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_c_addsub_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_c_addsub_0_0_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -521,9 +508,7 @@
     </Run>
     <Run Id="blocCalcul_v1_mult_gen_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a200tsbg484-1" ConstrsSet="blocCalcul_v1_mult_gen_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="blocCalcul_v1_mult_gen_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/blocCalcul_v1_mult_gen_0_0_impl_1">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
