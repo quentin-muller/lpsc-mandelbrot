@@ -142,22 +142,6 @@ architecture arch of lpsc_mandelbrot_firmware is
             PllLockedxSO    : out std_logic;
             ClkSys100MhzxCI : in  std_logic);
     end component;
-
-    component image_generator is
-        generic (
-            C_DATA_SIZE  : integer;
-            C_PIXEL_SIZE : integer;
-            C_VGA_CONFIG : t_VgaConfig);
-        port (
-            ClkVgaxCI    : in  std_logic;
-            RstxRAI      : in  std_logic;
-            PllLockedxSI : in  std_logic;
-            HCountxDI    : in  std_logic_vector((C_DATA_SIZE - 1) downto 0);
-            VCountxDI    : in  std_logic_vector((C_DATA_SIZE - 1) downto 0);
-            VidOnxSI     : in  std_logic;
-            DataxDO      : out std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0);
-            Color1xDI    : in  std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0));
-    end component image_generator;
      
      COMPONENT genTOhdmi
       PORT (
@@ -232,14 +216,15 @@ END COMPONENT;
     signal VidOnxS              : std_logic;
     -- Others
     signal DataImGen2HDMIxD     : std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0);
-     signal DataImGen2BramMVxD         : std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0);
-     signal DataBramMV2HdmixD          : std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0);
-    signal HdmiSourcexD         : t_HdmiSource                                      := C_NO_HDMI_SOURCE;
-     signal BramVideoMemoryWriteAddrxD : std_logic_vector((C_BRAM_VIDEO_MEMORY_ADDR_SIZE - 1) downto 0) := (others => '0');
-     signal BramVideoMemoryReadAddrxD  : std_logic_vector((C_BRAM_VIDEO_MEMORY_ADDR_SIZE - 1) downto 0);
-     signal BramVideoMemoryWriteDataxD : std_logic_vector((C_BRAM_VIDEO_MEMORY_DATA_SIZE - 1) downto 0);
-     signal BramVideoMemoryReadDataxD  : std_logic_vector((C_BRAM_VIDEO_MEMORY_DATA_SIZE - 1) downto 0);
-     signal BramVideoMemoryWriteEnablexD : std_logic_vector(0 downto 0);
+    signal DataImGen2BramMVxD         : std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0);
+    signal DataBramMV2HdmixD          : std_logic_vector(((C_PIXEL_SIZE * 3) - 1) downto 0);
+    signal HdmiSourcexD               : t_HdmiSource                                      := C_NO_HDMI_SOURCE;
+    signal BramVideoMemoryWriteAddrxD : std_logic_vector((C_BRAM_VIDEO_MEMORY_ADDR_SIZE - 1) downto 0) := (others => '0');
+    signal BramVideoMemoryReadAddrxD  : std_logic_vector((C_BRAM_VIDEO_MEMORY_ADDR_SIZE - 1) downto 0);
+    signal BramVideoMemoryWriteDataxD : std_logic_vector((C_BRAM_VIDEO_MEMORY_DATA_SIZE - 1) downto 0);
+    signal BramVideoMemoryReadDataxD  : std_logic_vector((C_BRAM_VIDEO_MEMORY_DATA_SIZE - 1) downto 0);
+    signal BramVideoMemoryWriteEnablexD : std_logic_vector(0 downto 0);
+    
     -- AXI4 Lite To Register Bank Signals
     signal WrDataxD             : std_logic_vector((C_AXI4_DATA_SIZE - 1) downto 0) := (others => '0');
     signal WrAddrxD             : std_logic_vector((C_AXI4_ADDR_SIZE - 1) downto 0) := (others => '0');
@@ -253,28 +238,11 @@ END COMPONENT;
     signal RdDataFlagColor1xDP  : std_logic_vector((C_FIFO_DATA_SIZE - 1) downto 0) := x"003a8923";
     signal RdDataFlagColor1xDN  : std_logic_vector((C_FIFO_DATA_SIZE - 1) downto 0) := x"003a8923";
 
-    -- Attributes
-    -- attribute mark_debug                              : string;
-    -- attribute mark_debug of DebugFlagColor1RegPortxDP : signal is "true";
-    -- --
-    -- attribute keep                                    : string;
-    -- attribute keep of DebugFlagColor1RegPortxDP       : signal is "true";
-
 begin
 
     -- Asynchronous statements
 
     DebugxB : block is
-
-        -- Debug signals
-        -- signal DebugVectExamplexD : std_logic_vector((C_AXI4_DATA_SIZE - 1) downto 0) := (others => '0');
-
-        -- Attributes
-        -- attribute mark_debug                       : string;
-        -- attribute mark_debug of DebugVectExamplexD : signal is "true";
-        -- --
-        -- attribute keep                             : string;
-        -- attribute keep of DebugVectExamplexD       : signal is "true";
 
     begin  -- block DebugxB
 
@@ -393,16 +361,6 @@ begin
          PllNotLockedxAS : PllNotLockedxS <= not PllLockedxS;
          PllLockedxAS    : PllLockedxD(0) <= PllLockedxS;
 
-         --BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= DataImGen2BramMVxD(23 downto 21) &
-         --                                                            DataImGen2BramMVxD(15 downto 13) &
-         --                                                            DataImGen2BramMVxD(7 downto 5);
-         
-         --BramVMWrAddrxAS : BramVideoMemoryWriteAddrxD <= VCountIntxD((C_BRAM_VIDEO_MEMORY_HIGH_ADDR_SIZE - 1) downto 0) &
-         --                                                HCountIntxD((C_BRAM_VIDEO_MEMORY_LOW_ADDR_SIZE - 1) downto 0);
-
-         --Test affichage d'une couleur                                 -- R G B
-         --BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= "000000111"; 
-
          BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= data_store(8 downto 0);
          BramVMWrAddrxAS : BramVideoMemoryWriteAddrxD <= add_y & add_x;
          BramVideoMemoryWriteEnablexAS : BramVideoMemoryWriteEnablexD(0) <= we_s;
@@ -419,21 +377,6 @@ begin
                  PllLockedxSO    => PllLockedxS,
                  ClkSys100MhzxCI => ClkSys100MhzBufgxC);
 
-        LpscImageGeneratorxI : entity work.lpsc_image_generator
-            generic map (
-                C_DATA_SIZE  => C_DATA_SIZE,
-                C_PIXEL_SIZE => C_PIXEL_SIZE,
-                C_VGA_CONFIG => C_VGA_CONFIG)
-            port map (
-                ClkVgaxCI    => ClkMandelxC,   --ClkVgaxC,            --
-                RstxRAI      => PllNotLockedxS,--HdmiPllNotLockedxS,  --
-                PllLockedxSI => PllLockedxD(0),--HdmiPllLockedxS,     --
-                HCountxDI    => HCountIntxD,   --HCountxD,            --
-                VCountxDI    => VCountIntxD,   --VCountxD,            --
-                VidOnxSI     => '1',           --VidOnxS,             --
-                DataxDO      => DataImGen2BramMVxD, --DataImGen2HDMIxD,    --
-                Color1xDI    => RdDataFlagColor1xDP(((C_PIXEL_SIZE * 3) - 1) downto 0));
-                
          -- Generation des c_real et c_imag pour l'iterateur de mandelbrot       
          cmplxValGen : entity work.ComplexValueGenerator
             generic map
@@ -467,29 +410,5 @@ begin
             ready     => iterateurReady,
             we        => we_s
             );
-
-         HVCountIntxP : process (all) is
-         begin  -- process HVCountxP
-
-             if PllNotLockedxS = '1' then
-                 HCountIntxD <= (others => '0');
-                 VCountIntxD <= (others => '0');
-             elsif rising_edge(ClkMandelxC) then
-                 HCountIntxD <= HCountIntxD;
-                 VCountIntxD <= VCountIntxD;
-
-                 if unsigned(HCountIntxD) = (C_VGA_CONFIG.HActivexD - 1) then
-                     HCountIntxD <= (others => '0');
-
-                     if unsigned(VCountIntxD) = (C_VGA_CONFIG.VActivexD - 1) then
-                         VCountIntxD <= (others => '0');
-                     else
-                         VCountIntxD <= std_logic_vector(unsigned(VCountIntxD) + 1);
-                     end if;
-                 else
-                     HCountIntxD <= std_logic_vector(unsigned(HCountIntxD) + 1);
-                 end if;
-             end if;
-         end process HVCountIntxP;
     end block FpgaUserCDxB;
 end arch;
