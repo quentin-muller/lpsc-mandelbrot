@@ -239,6 +239,7 @@ END COMPONENT;
      signal BramVideoMemoryReadAddrxD  : std_logic_vector((C_BRAM_VIDEO_MEMORY_ADDR_SIZE - 1) downto 0);
      signal BramVideoMemoryWriteDataxD : std_logic_vector((C_BRAM_VIDEO_MEMORY_DATA_SIZE - 1) downto 0);
      signal BramVideoMemoryReadDataxD  : std_logic_vector((C_BRAM_VIDEO_MEMORY_DATA_SIZE - 1) downto 0);
+     signal BramVideoMemoryWriteEnablexD : std_logic_vector(0 downto 0);
     -- AXI4 Lite To Register Bank Signals
     signal WrDataxD             : std_logic_vector((C_AXI4_DATA_SIZE - 1) downto 0) := (others => '0');
     signal WrAddrxD             : std_logic_vector((C_AXI4_ADDR_SIZE - 1) downto 0) := (others => '0');
@@ -347,7 +348,7 @@ begin
   PORT MAP (
   -- Port A (Write)
     clka => ClkMandelxC,
-    wea => PllLockedxD,
+    wea => BramVideoMemoryWriteEnablexD,
     addra => BramVideoMemoryWriteAddrxD,
     dina => BramVideoMemoryWriteDataxD,
     douta => open,
@@ -392,13 +393,20 @@ begin
          PllNotLockedxAS : PllNotLockedxS <= not PllLockedxS;
          PllLockedxAS    : PllLockedxD(0) <= PllLockedxS;
 
-         BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= DataImGen2BramMVxD(23 downto 21) &
-                                                                     DataImGen2BramMVxD(15 downto 13) &
-                                                                     DataImGen2BramMVxD(7 downto 5);
+         --BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= DataImGen2BramMVxD(23 downto 21) &
+         --                                                            DataImGen2BramMVxD(15 downto 13) &
+         --                                                            DataImGen2BramMVxD(7 downto 5);
+         
+         --BramVMWrAddrxAS : BramVideoMemoryWriteAddrxD <= VCountIntxD((C_BRAM_VIDEO_MEMORY_HIGH_ADDR_SIZE - 1) downto 0) &
+         --                                                HCountIntxD((C_BRAM_VIDEO_MEMORY_LOW_ADDR_SIZE - 1) downto 0);
 
-         BramVMWrAddrxAS : BramVideoMemoryWriteAddrxD <= VCountIntxD((C_BRAM_VIDEO_MEMORY_HIGH_ADDR_SIZE - 1) downto 0) &
-                                                         HCountIntxD((C_BRAM_VIDEO_MEMORY_LOW_ADDR_SIZE - 1) downto 0);
+         --Test affichage d'une couleur                                 -- R G B
+         --BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= "000000111"; 
 
+         BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= data_store(8 downto 0);
+         BramVMWrAddrxAS : BramVideoMemoryWriteAddrxD <= add_y & add_x;
+         BramVideoMemoryWriteEnablexAS : BramVideoMemoryWriteEnablexD(0) <= we_s;
+         
          BUFGClkSysToClkMandelxI : BUFG
              port map (
                  O => ClkSys100MhzBufgxC,
