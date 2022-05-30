@@ -361,8 +361,8 @@ begin
          PllNotLockedxAS : PllNotLockedxS <= not PllLockedxS;
          PllLockedxAS    : PllLockedxD(0) <= PllLockedxS;
 
-         BramVideoMemoryWriteDataxAS : BramVideoMemoryWriteDataxD <= data_store(8 downto 0);
-         BramVMWrAddrxAS : BramVideoMemoryWriteAddrxD <= add_y & add_x;
+         BramVideoMemoryWriteDataxAS   : BramVideoMemoryWriteDataxD <= data_store(8 downto 0);
+         BramVMWrAddrxAS               : BramVideoMemoryWriteAddrxD <= add_y & add_x;
          BramVideoMemoryWriteEnablexAS : BramVideoMemoryWriteEnablexD(0) <= we_s;
          
          BUFGClkSysToClkMandelxI : BUFG
