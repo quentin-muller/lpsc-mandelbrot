@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
-// Date        : Mon Feb 28 10:45:59 2022
-// Host        : debian-xps15 running 64-bit Debian GNU/Linux 11 (bullseye)
+// Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+// Date        : Tue May 31 11:22:28 2022
+// Host        : Surface-2-Quent running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim
-//               /home/jo/Documents/Hepia/cours/lpsc/lpsc-mandelbrot/ips/hw/lpsc_clk_mandelbrot/src/ip_core/clk_mandelbrot/clk_mandelbrot_sim_netlist.v
+//               c:/lpsc-mandelbrot/ips/hw/lpsc_clk_mandelbrot/src/ip_core/clk_mandelbrot/clk_mandelbrot_sim_netlist.v
 // Design      : clk_mandelbrot
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -15,21 +15,25 @@
 (* NotValidForBitStream *)
 module clk_mandelbrot
    (ClkMandelxCO,
+    ClkMandel50,
     reset,
     PllLockedxSO,
     ClkSys100MhzxCI);
   output ClkMandelxCO;
+  output ClkMandel50;
   input reset;
   output PllLockedxSO;
   input ClkSys100MhzxCI;
 
+  wire ClkMandel50;
   wire ClkMandelxCO;
   (* IBUF_LOW_PWR *) wire ClkSys100MhzxCI;
   wire PllLockedxSO;
   wire reset;
 
   clk_mandelbrot_clk_wiz inst
-       (.ClkMandelxCO(ClkMandelxCO),
+       (.ClkMandel50(ClkMandel50),
+        .ClkMandelxCO(ClkMandelxCO),
         .ClkSys100MhzxCI(ClkSys100MhzxCI),
         .PllLockedxSO(PllLockedxSO),
         .reset(reset));
@@ -37,14 +41,18 @@ endmodule
 
 module clk_mandelbrot_clk_wiz
    (ClkMandelxCO,
+    ClkMandel50,
     reset,
     PllLockedxSO,
     ClkSys100MhzxCI);
   output ClkMandelxCO;
+  output ClkMandel50;
   input reset;
   output PllLockedxSO;
   input ClkSys100MhzxCI;
 
+  wire ClkMandel50;
+  wire ClkMandel50_clk_mandelbrot;
   wire ClkMandelxCO;
   wire ClkMandelxCO_clk_mandelbrot;
   wire ClkSys100MhzxCI;
@@ -57,7 +65,6 @@ module clk_mandelbrot_clk_wiz
   wire NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED;
-  wire NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT2_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT2B_UNCONNECTED;
@@ -88,6 +95,10 @@ module clk_mandelbrot_clk_wiz
        (.I(ClkMandelxCO_clk_mandelbrot),
         .O(ClkMandelxCO));
   (* BOX_TYPE = "PRIMITIVE" *) 
+  BUFG clkout2_buf
+       (.I(ClkMandel50_clk_mandelbrot),
+        .O(ClkMandel50));
+  (* BOX_TYPE = "PRIMITIVE" *) 
   MMCME2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
     .CLKFBOUT_MULT_F(10.000000),
@@ -99,7 +110,7 @@ module clk_mandelbrot_clk_wiz
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
     .CLKOUT0_USE_FINE_PS("FALSE"),
-    .CLKOUT1_DIVIDE(1),
+    .CLKOUT1_DIVIDE(20),
     .CLKOUT1_DUTY_CYCLE(0.500000),
     .CLKOUT1_PHASE(0.000000),
     .CLKOUT1_USE_FINE_PS("FALSE"),
@@ -148,7 +159,7 @@ module clk_mandelbrot_clk_wiz
         .CLKINSTOPPED(NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED),
         .CLKOUT0(ClkMandelxCO_clk_mandelbrot),
         .CLKOUT0B(NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED),
-        .CLKOUT1(NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED),
+        .CLKOUT1(ClkMandel50_clk_mandelbrot),
         .CLKOUT1B(NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED),
         .CLKOUT2(NLW_mmcm_adv_inst_CLKOUT2_UNCONNECTED),
         .CLKOUT2B(NLW_mmcm_adv_inst_CLKOUT2B_UNCONNECTED),

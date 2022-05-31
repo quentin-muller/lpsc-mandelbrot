@@ -114,11 +114,11 @@ i_mandelbrot : entity work.mandelbrot_oneStage
                         z_real_s <= nextZ_real_s;
                         z_imag_s <= nextZ_imag_s;
                         ready <= '0';
-                        we <= '0';
+                        we    <= '0';
                     else
                         next_state <= WRITE_MEM;
                         ready <= '0';
-                        we <= '1';
+                        we    <= '1';
                         iteration <= std_logic_vector(to_unsigned(iter_s, iteration'length));
                         
                     end if;
@@ -126,7 +126,7 @@ i_mandelbrot : entity work.mandelbrot_oneStage
                     next_state <= ITERATION_STEP;
                     z_real_s <= (others => '0');
                     z_imag_s <= (others => '0');
-                    iter_s <= 0;    
+                    iter_s <= 0;
                     ready <= '1';
                     we <= '0';
                 WHEN OTHERS =>

@@ -57,6 +57,7 @@
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
 // ClkMandelxCO__100.00000______0.000______50.0______130.958_____98.575
+// ClkMandel50__50.00000______0.000______50.0______151.636_____98.575
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -70,6 +71,7 @@ module clk_mandelbrot_clk_wiz
  (// Clock in ports
   // Clock out ports
   output        ClkMandelxCO,
+  output        ClkMandel50,
   // Status and control signals
   input         reset,
   output        PllLockedxSO,
@@ -94,7 +96,7 @@ wire clk_in2_clk_mandelbrot;
   //    * Unused outputs are labeled unused
 
   wire        ClkMandelxCO_clk_mandelbrot;
-  wire        clk_out2_clk_mandelbrot;
+  wire        ClkMandel50_clk_mandelbrot;
   wire        clk_out3_clk_mandelbrot;
   wire        clk_out4_clk_mandelbrot;
   wire        clk_out5_clk_mandelbrot;
@@ -109,7 +111,6 @@ wire clk_in2_clk_mandelbrot;
   wire        clkfbout_buf_clk_mandelbrot;
   wire        clkfboutb_unused;
     wire clkout0b_unused;
-   wire clkout1_unused;
    wire clkout1b_unused;
    wire clkout2_unused;
    wire clkout2b_unused;
@@ -135,6 +136,10 @@ wire clk_in2_clk_mandelbrot;
     .CLKOUT0_PHASE        (0.000),
     .CLKOUT0_DUTY_CYCLE   (0.500),
     .CLKOUT0_USE_FINE_PS  ("FALSE"),
+    .CLKOUT1_DIVIDE       (20),
+    .CLKOUT1_PHASE        (0.000),
+    .CLKOUT1_DUTY_CYCLE   (0.500),
+    .CLKOUT1_USE_FINE_PS  ("FALSE"),
     .CLKIN1_PERIOD        (10.000))
   mmcm_adv_inst
     // Output clocks
@@ -143,7 +148,7 @@ wire clk_in2_clk_mandelbrot;
     .CLKFBOUTB           (clkfboutb_unused),
     .CLKOUT0             (ClkMandelxCO_clk_mandelbrot),
     .CLKOUT0B            (clkout0b_unused),
-    .CLKOUT1             (clkout1_unused),
+    .CLKOUT1             (ClkMandel50_clk_mandelbrot),
     .CLKOUT1B            (clkout1b_unused),
     .CLKOUT2             (clkout2_unused),
     .CLKOUT2B            (clkout2b_unused),
@@ -198,6 +203,10 @@ wire clk_in2_clk_mandelbrot;
    (.O   (ClkMandelxCO),
     .I   (ClkMandelxCO_clk_mandelbrot));
 
+
+  BUFG clkout2_buf
+   (.O   (ClkMandel50),
+    .I   (ClkMandel50_clk_mandelbrot));
 
 
 

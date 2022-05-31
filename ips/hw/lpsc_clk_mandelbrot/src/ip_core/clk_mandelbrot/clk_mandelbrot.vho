@@ -56,6 +56,7 @@
 --   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 ------------------------------------------------------------------------------
 -- ClkMandelxCO__100.00000______0.000______50.0______130.958_____98.575
+-- ClkMandel50__50.00000______0.000______50.0______151.636_____98.575
 --
 ------------------------------------------------------------------------------
 -- Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -70,6 +71,7 @@ port
  (-- Clock in ports
   -- Clock out ports
   ClkMandelxCO          : out    std_logic;
+  ClkMandel50          : out    std_logic;
   -- Status and control signals
   reset             : in     std_logic;
   PllLockedxSO            : out    std_logic;
@@ -85,6 +87,7 @@ your_instance_name : clk_mandelbrot
    port map ( 
   -- Clock out ports  
    ClkMandelxCO => ClkMandelxCO,
+   ClkMandel50 => ClkMandel50,
   -- Status and control signals                
    reset => reset,
    PllLockedxSO => PllLockedxSO,

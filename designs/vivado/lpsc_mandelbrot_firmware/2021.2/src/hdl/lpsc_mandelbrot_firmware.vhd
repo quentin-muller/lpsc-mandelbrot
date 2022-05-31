@@ -138,6 +138,7 @@ architecture arch of lpsc_mandelbrot_firmware is
     component clk_mandelbrot
         port(
             ClkMandelxCO    : out std_logic;
+            ClkMandel50     : out std_logic;
             reset           : in  std_logic;
             PllLockedxSO    : out std_logic;
             ClkSys100MhzxCI : in  std_logic);
@@ -372,7 +373,8 @@ begin
 
          ClkMandelbrotxI : clk_mandelbrot
              port map (
-                 ClkMandelxCO    => ClkMandelxC,
+                 ClkMandelxCO    => open,
+                 ClkMandel50     => ClkMandelxC,
                  reset           => ResetxR,
                  PllLockedxSO    => PllLockedxS,
                  ClkSys100MhzxCI => ClkSys100MhzBufgxC);

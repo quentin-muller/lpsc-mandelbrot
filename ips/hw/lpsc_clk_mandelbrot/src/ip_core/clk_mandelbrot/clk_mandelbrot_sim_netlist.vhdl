@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
--- Date        : Mon Feb 28 10:45:59 2022
--- Host        : debian-xps15 running 64-bit Debian GNU/Linux 11 (bullseye)
+-- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+-- Date        : Tue May 31 11:22:28 2022
+-- Host        : Surface-2-Quent running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim
---               /home/jo/Documents/Hepia/cours/lpsc/lpsc-mandelbrot/ips/hw/lpsc_clk_mandelbrot/src/ip_core/clk_mandelbrot/clk_mandelbrot_sim_netlist.vhdl
+--               c:/lpsc-mandelbrot/ips/hw/lpsc_clk_mandelbrot/src/ip_core/clk_mandelbrot/clk_mandelbrot_sim_netlist.vhdl
 -- Design      : clk_mandelbrot
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -17,6 +17,7 @@ use UNISIM.VCOMPONENTS.ALL;
 entity clk_mandelbrot_clk_wiz is
   port (
     ClkMandelxCO : out STD_LOGIC;
+    ClkMandel50 : out STD_LOGIC;
     reset : in STD_LOGIC;
     PllLockedxSO : out STD_LOGIC;
     ClkSys100MhzxCI : in STD_LOGIC
@@ -24,6 +25,7 @@ entity clk_mandelbrot_clk_wiz is
 end clk_mandelbrot_clk_wiz;
 
 architecture STRUCTURE of clk_mandelbrot_clk_wiz is
+  signal ClkMandel50_clk_mandelbrot : STD_LOGIC;
   signal ClkMandelxCO_clk_mandelbrot : STD_LOGIC;
   signal ClkSys100MhzxCI_clk_mandelbrot : STD_LOGIC;
   signal clkfbout_buf_clk_mandelbrot : STD_LOGIC;
@@ -32,7 +34,6 @@ architecture STRUCTURE of clk_mandelbrot_clk_wiz is
   signal NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED : STD_LOGIC;
-  signal NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKOUT2_UNCONNECTED : STD_LOGIC;
   signal NLW_mmcm_adv_inst_CLKOUT2B_UNCONNECTED : STD_LOGIC;
@@ -54,6 +55,7 @@ architecture STRUCTURE of clk_mandelbrot_clk_wiz is
   attribute IFD_DELAY_VALUE : string;
   attribute IFD_DELAY_VALUE of clkin1_ibufg : label is "AUTO";
   attribute BOX_TYPE of clkout1_buf : label is "PRIMITIVE";
+  attribute BOX_TYPE of clkout2_buf : label is "PRIMITIVE";
   attribute BOX_TYPE of mmcm_adv_inst : label is "PRIMITIVE";
 begin
 clkf_buf: unisim.vcomponents.BUFG
@@ -74,6 +76,11 @@ clkout1_buf: unisim.vcomponents.BUFG
       I => ClkMandelxCO_clk_mandelbrot,
       O => ClkMandelxCO
     );
+clkout2_buf: unisim.vcomponents.BUFG
+     port map (
+      I => ClkMandel50_clk_mandelbrot,
+      O => ClkMandel50
+    );
 mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
     generic map(
       BANDWIDTH => "OPTIMIZED",
@@ -86,7 +93,7 @@ mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
       CLKOUT0_DUTY_CYCLE => 0.500000,
       CLKOUT0_PHASE => 0.000000,
       CLKOUT0_USE_FINE_PS => false,
-      CLKOUT1_DIVIDE => 1,
+      CLKOUT1_DIVIDE => 20,
       CLKOUT1_DUTY_CYCLE => 0.500000,
       CLKOUT1_PHASE => 0.000000,
       CLKOUT1_USE_FINE_PS => false,
@@ -136,7 +143,7 @@ mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
       CLKINSTOPPED => NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED,
       CLKOUT0 => ClkMandelxCO_clk_mandelbrot,
       CLKOUT0B => NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED,
-      CLKOUT1 => NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED,
+      CLKOUT1 => ClkMandel50_clk_mandelbrot,
       CLKOUT1B => NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED,
       CLKOUT2 => NLW_mmcm_adv_inst_CLKOUT2_UNCONNECTED,
       CLKOUT2B => NLW_mmcm_adv_inst_CLKOUT2B_UNCONNECTED,
@@ -168,6 +175,7 @@ use UNISIM.VCOMPONENTS.ALL;
 entity clk_mandelbrot is
   port (
     ClkMandelxCO : out STD_LOGIC;
+    ClkMandel50 : out STD_LOGIC;
     reset : in STD_LOGIC;
     PllLockedxSO : out STD_LOGIC;
     ClkSys100MhzxCI : in STD_LOGIC
@@ -180,6 +188,7 @@ architecture STRUCTURE of clk_mandelbrot is
 begin
 inst: entity work.clk_mandelbrot_clk_wiz
      port map (
+      ClkMandel50 => ClkMandel50,
       ClkMandelxCO => ClkMandelxCO,
       ClkSys100MhzxCI => ClkSys100MhzxCI,
       PllLockedxSO => PllLockedxSO,

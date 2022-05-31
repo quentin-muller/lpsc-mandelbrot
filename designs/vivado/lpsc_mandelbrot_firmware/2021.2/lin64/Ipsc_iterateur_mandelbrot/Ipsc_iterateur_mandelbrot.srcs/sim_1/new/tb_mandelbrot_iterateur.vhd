@@ -52,7 +52,7 @@ end component;
 
 --constantes
 constant SIZE_VEC : integer := 18;
-constant CLK_PERIOD: time := 10ns;
+constant CLK_PERIOD: time := 20ns;
 
 -- signaux
 signal clk : std_logic := '0';
